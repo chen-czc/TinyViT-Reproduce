@@ -1,4 +1,9 @@
 """Model Inference."""
+import warnings
+from pydantic.warnings import PydanticDeprecatedSince20
+warnings.filterwarnings("ignore", category=PydanticDeprecatedSince20)
+warnings.filterwarnings("ignore", module="pydantic._internal._generate_schema")
+
 import torch
 import numpy as np
 from PIL import Image
@@ -6,6 +11,8 @@ from PIL import Image
 from models.tiny_vit import tiny_vit_21m_224
 from data import build_transform, imagenet_classnames
 from config import get_config
+
+
 
 config = get_config()
 
