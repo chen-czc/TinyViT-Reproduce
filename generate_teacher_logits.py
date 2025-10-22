@@ -1,6 +1,6 @@
 # generate_teacher_logits.py
 # 用法示例（在 Kaggle notebook cell 中运行）：
-# !python generate_teacher_logits.py --batch-size 64 --finetune-epochs 0 --save-path /kaggle/working/teacher_logits.npz
+# !python generate_teacher_logits.py --batch-size 128 --finetune-epochs 5 --num-workers 4 --save-path /kaggle/working/teacher_logits.npz
 
 import os
 import argparse
@@ -14,15 +14,13 @@ from torchvision import transforms, datasets
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument('--batch-size', type=int, default=64)
-    p.add_argument('--num-workers', type=int, default=2)
+    p.add_argument('--batch-size', type=int, default=128)
+    p.add_argument('--num-workers', type=int, default=4)
     p.add_argument('--model', type=str, default='resnet50', choices=['resnet50'])
     p.add_argument('--pretrained', action='store_true', help='use ImageNet pretrained weights (default true if not finetune)')
-    p.add_argument('--finetune-epochs', type=int, default=0,
-                   help='If >0, fine-tune the teacher on CIFAR-10 for this many epochs before generating logits.')
+    p.add_argument('--finetune-epochs', type=int, default=0, help='If >0, fine-tune the teacher on CIFAR-10 for this many epochs before generating logits.')
     p.add_argument('--lr', type=float, default=1e-3)
-    p.add_argument('--save-path', type=str, default='./teacher_logits.npz',
-                   help='path to save a numpy archive containing logits and labels')
+    p.add_argument('--save-path', type=str, default='./teacher_logits.npz', help='path to save a numpy archive containing logits and labels')
     p.add_argument('--device', type=str, default='cuda')
     return p.parse_args()
 

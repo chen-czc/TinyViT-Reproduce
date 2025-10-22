@@ -35,6 +35,16 @@ with torch.no_grad():
 # print top-5 classification names
 probs = torch.softmax(logits, -1)
 scores, inds = probs.topk(5, largest=True, sorted=True)
+
+# 将推理结果保存到文件
+output_file = 'inf_result.txt'
+
+with open(output_file, 'w') as f:
+    f.write('=' * 30 + '\n')
+    f.write(fname + '\n')
+    for score, ind in zip(scores[0].numpy(), inds[0].numpy()):
+        f.write(f'{imagenet_classnames[ind]}: {score:.2f}\n')
+
 print('=' * 30)
 print(fname)
 for score, ind in zip(scores[0].numpy(), inds[0].numpy()):
