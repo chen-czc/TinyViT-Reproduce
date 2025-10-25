@@ -278,7 +278,7 @@ def main():
             torch.save(model.state_dict(), os.path.join(args.save_dir, 'best_student.pth'))
             print("Saved best_student.pth on epoch {epoch} with acc: {best_acc:.4f}")
         with open(args.log_path, 'a') as f:
-                f.write(f"{epoch},{train_loss:.4f},{val_acc:.4f},{datetime.now().strftime("%Y-%m-%d %H:%M:%S")},{(t1-t0):.1f}s\n")
+                f.write(f"{epoch},{train_loss:.4f},{val_acc:.4f},{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{(t1-t0):.1f}s\n")
     total_time = time.time() - start
     print(f"Training finished. Total time: {total_time/3600:.2f} hours. Best val acc: {best_acc:.4f}")
 
