@@ -189,12 +189,19 @@ def main():
         )
 
     print("-> Generating teacher logits ...")
-    logits, labels = generate_logits(teacher, full_train_loader, device=device)
-    os.makedirs(os.path.dirname(args.save_path) or '.', exist_ok=True)
-    np.savez_compressed(args.save_path, logits=logits, labels=labels)
+    # 生成训练集 logits
+    logits_train, labels_train = generate_logits(teacher, full_train_loader, device=device)
+    np.savez_compressed("teacher_logits_train.npz", logits=logits_train, labels=labels_train)
+
+    # 生成测试集 logits
+    logits_val, labels_val = generate_logits(teacher, val_loader, device=device)
+    np.savez_compressed("teacher_logits_val.npz", logits=logits_val, labels=labels_val)
+
     print(f"✅ Saved logits+labels to {args.save_path}")
-    print(f"logits shape={logits.shape}, labels shape={labels.shape}")
-    print(f"Approx size: {logits.nbytes/1e6:.2f} MB")
+    print(f"logits shape={logits_train.shape}, labels shape={labels_train.shape}")
+    print(f"Approx size: {logits_train.nbytes/1e6:.2f} MB")
+    print(f"logits shape={logits_val.shape}, labels shape={logits_val.shape}")
+    print(f"Approx size: {logits_val.nbytes/1e6:.2f} MB")
 
 
 if __name__ == '__main__':
