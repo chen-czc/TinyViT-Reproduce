@@ -61,6 +61,8 @@ class CIFAR10WithLogits(Dataset):
         self.logits = arr['logits']
         self.labels = arr['labels']
         # 校验样本数量一致
+        print(len(self.base))
+        print(len(self.logits))
         assert len(self.base) == len(self.logits), "CIFAR size and logits length must match"
         self.transform = transform
 
