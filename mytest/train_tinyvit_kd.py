@@ -230,14 +230,17 @@ def main():
         print(torch.cuda.get_device_name(0), " total mem (GB):", torch.cuda.get_device_properties(0).total_memory / 1024**3)
 
     # 数据变换：训练集与验证集
+    # 正确的 transform_train 顺序（替换你脚本里的）
     transform_train = transforms.Compose([
-        transforms.Resize((224, 224)),                # ResNet/Vit 通常需要 224x224 输入
-        transforms.RandomHorizontalFlip(),            # 数据增强：随机水平翻转
-        transforms.RandAugment(num_ops=2, magnitude=9),
-        transforms.RandomErasing(p=0.25),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+        transforms.Resize((224, 224)),         # PIL -> PIL
+        transforms.RandomHorizontalFlip(),     # PIL
+        transforms.RandAugment(num_ops=2, magnitude=9),  # PIL
+        transforms.ToTensor(),                 # PIL -> Tensor
+        transforms.RandomErasing(p=0.25),      # Tensor (必须在 ToTensor 之后)
+        transforms.Normalize(mean=(0.485,0.456,0.406),
+                            std=(0.229,0.224,0.225))
     ])
+
     transform_val = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
